@@ -17,7 +17,7 @@ class AuthenticationTest extends ApiTestCase
         $manager = $container->get('doctrine')->getManager();
 
         // retrieve a token
-        $response = $client->request('POST', '/api/users/register', [
+        $response = $client->request('POST', '/api/register', [
             'headers' => ['Content-Type' => 'application/json'],
             'json' => [
                 'email' => 'test@example.com',
@@ -30,7 +30,7 @@ class AuthenticationTest extends ApiTestCase
         $this->assertJsonContains([
             "@context" => "/api/contexts/User",
             "@id" => "/api/users/1",
-            "@type"=> "User",
+            "@type" => "User",
             "id" => 1,
             "email" => "test@example.com"
         ]);

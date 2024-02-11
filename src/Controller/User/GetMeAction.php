@@ -15,7 +15,8 @@ class GetMeAction extends AbstractController
     public function __construct(
         private TokenStorageInterface $tokenStorage,
         private NormalizerInterface $normalzier
-    ) {}
+    ) {
+    }
 
     public function __invoke(Request $request): ?UserInterface
     {

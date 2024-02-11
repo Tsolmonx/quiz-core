@@ -28,8 +28,21 @@
         <operations>
             <operation name="app_get" class="ApiPlatform\Metadata\Get" uriTemplate="/users/{id}"
                 method="GET" />
-            <operation name="app_post" class="ApiPlatform\Metadata\Post" uriTemplate="/register"
-                method="POST" processor="App\State\UserPasswordHasher">
+            <operation name="app_post"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/register"
+                method="POST"
+                processor="App\State\UserPasswordHasher"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:user:write</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
                 <validationContext>
                     <values>
                         <value name="groups">

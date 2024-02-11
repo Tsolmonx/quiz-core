@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionGroupRepository::class)]
+#[ORM\Table(name: 'app_question_group')]
 class QuestionGroup
 {
     #[ORM\Id]

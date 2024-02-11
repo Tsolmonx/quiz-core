@@ -13,25 +13,24 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
-    api:
-      pattern: ^/api/
-      provider: app_user_provider
-      stateless: true
-      jwt: ~
     login:
-      provider: app_user_provider
       pattern: ^/api/auth
       stateless: true
       json_login:
+        check_path: api_auth #or api_login_check as defined in config/routes.yaml
         username_path: email
         password_path: password
-        check_path: /api/auth # or api_login_check as defined in config/routes.yaml
         success_handler: lexik_jwt_authentication.handler.authentication_success
         failure_handler: lexik_jwt_authentication.handler.authentication_failure
+    api:
+      pattern: ^/api/
+      stateless: true
+      provider: app_user_provider
+      jwt: ~
 
   # Note: Only the *first* access control that matches will be used
   access_control:
-    - { path: ^/api/login, roles: PUBLIC_ACCESS }
+    - { path: ^/api/auth, roles: PUBLIC_ACCESS }
     - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
     - { path: ^/api, roles: PUBLIC_ACCESS }
     # - { path: ^/admin, roles: ROLE_ADMIN }
