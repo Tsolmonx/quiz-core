@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 http://api-platform.com/schema/metadata/resources-3.0.xsd">
+    <resource class="App\Entity\User" shortName="User">
+        <normalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz:read</value>
+                        <value>app:quiz:list</value>
+                    </values>
+                </value>
+            </values>
+        </normalizationContext>
+        <denormalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz:write</value>
+                    </values>
+                </value>
+            </values>
+        </denormalizationContext>
+
+        <operations>
+            <operation name="app_get" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes"
+                method="GET" />
+            <operation name="app_get" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes/{id}"
+                method="GET" />
+            <operation name="app_post" class="ApiPlatform\Metadata\Post" uriTemplate="/quizzes/new"
+                method="POST">
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:quiz:write</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+            <operation
+                name="app_put"
+                method="PATCH"
+                class="ApiPlatform\Metadata\Put"
+                uriTemplate="/quizzes/{id}"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:quiz:write</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:quiz:write</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+        </operations>
+    </resource>
+</resources>
