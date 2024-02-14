@@ -7,20 +7,19 @@ if [ "${1#-}" != "$1" ]; then
 fi
 
 if [ "$1" = 'php-fpm' ] || [ "$1" = 'bin/console' ]; then
-	# mkdir -p var/cache var/log var/sessions public/media
-	# setfacl -R -m u:www-data:rwX -m u:"$(whoami)":rwX var public/media
-	# setfacl -dR -m u:www-data:rwX -m u:"$(whoami)":rwX var public/media
+    echo "IN IF ENTRYPOINT BIIITCH"
+    echo "$APP_ENV"
 
-	# if [ "$APP_ENV" != 'prod' ]; then
-	# 	composer install --prefer-dist --no-progress --no-interaction
-	# 	bin/console assets:install --no-interaction
-	# fi
+    composer install --no-dev --optimize-autoloader --no-interaction
+	# composer install --prefer-dist --no-progress --no-interaction
+	bin/console assets:install --no-interaction
 
 	until bin/console doctrine:query:sql "select 1" >/dev/null 2>&1; do
 	    (>&2 echo "Waiting for MySQL to be ready...")
 		sleep 1
 	done
 
+    echo "Migrating..."
     bin/console doctrine:migrations:migrate --no-interaction
 fi
 
