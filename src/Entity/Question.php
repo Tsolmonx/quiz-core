@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\QuestionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuestionRepository::class)]
 #[ORM\Table(name: 'app_question')]
-#[ApiResource]
 class Question
 {
     #[ORM\Id]
@@ -24,7 +24,19 @@ class Question
 
     #[ORM\ManyToOne(inversedBy: 'questions')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?QuestionGroup $questionQroup = null;
+    private ?QuestionGroup $questionGroup = null;
+
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Answer::class, orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $answers;
+
+    #[ORM\ManyToOne(inversedBy: 'questions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Quiz $quiz = null;
+
+    public function __construct()
+    {
+        $this->answers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -55,14 +67,56 @@ class Question
         return $this;
     }
 
-    public function getQuestionQroup(): ?QuestionGroup
+    public function getQuestionGroup(): ?QuestionGroup
     {
-        return $this->questionQroup;
+        return $this->questionGroup;
     }
 
-    public function setQuestionQroup(?QuestionGroup $questionQroup): static
+    public function setQuestionGroup(?QuestionGroup $questionGroup): static
     {
-        $this->questionQroup = $questionQroup;
+        $this->questionGroup = $questionGroup;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): static
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): static
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getQuestion() === $this) {
+                $answer->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuiz(): ?Quiz
+    {
+        return $this->quiz;
+    }
+
+    public function setQuiz(?Quiz $quiz): static
+    {
+        $this->quiz = $quiz;
 
         return $this;
     }

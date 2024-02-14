@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 http://api-platform.com/schema/metadata/resources-3.0.xsd">
+
+    <!-- Quizzes groups, get Groups, add group -->
+    <resource class="App\Entity\QuestionGroup" uriTemplate="/quizzes/{quizId}/question_groups">
+        <uriVariables>
+            <uriVariable parameterName="quizId" fromClass="App\Entity\Quiz" toProperty="quiz"/>
+        </uriVariables>
+        <normalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz:read</value>
+                        <value>app:question_group:read</value>
+                        <value>app:question_group:list</value>
+                    </values>
+                </value>
+            </values>
+        </normalizationContext>
+        <denormalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:question_group:write</value>
+                    </values>
+                </value>
+            </values>
+        </denormalizationContext>
+
+        <operations>
+            <operation
+                name="app_add_question_group"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/quizzes/{quizId}/question_group/new"
+                method="POST"
+            >
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:question_group:write</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+        </operations>
+    </resource>
+
+    <!-- Quizzes group {id}, get Group, edit, delete group -->
+    <resource class="App\Entity\QuestionGroup" uriTemplate="/quizzes/{quizId}/question_groups/{id}">
+        <uriVariables>
+            <uriVariable parameterName="quizId" fromClass="App\Entity\Quiz" toProperty="quiz"/>
+            <uriVariable parameterName="id" fromClass="App\Entity\QuestionGroup" />
+        </uriVariables>
+        <normalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz:read</value>
+                        <value>app:question_group:read</value>
+                        <value>app:question_group:list</value>
+                    </values>
+                </value>
+            </values>
+        </normalizationContext>
+        <denormalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:question_group:edit</value>
+                    </values>
+                </value>
+            </values>
+        </denormalizationContext>
+
+        <operations>
+            <operation
+                name="app_edit_question_group"
+                method="PATCH"
+                class="ApiPlatform\Metadata\Put"
+                uriTemplate="/quizzes/{quizId}/question_group/{id}"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:question_group:edit</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:question_group:edit</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+        </operations>
+    </resource>
+</resources>

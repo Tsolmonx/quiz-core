@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 http://api-platform.com/schema/metadata/resources-3.0.xsd">
+    <resource class="App\Entity\Quiz" shortName="Quiz" processor="App\State\QuizProcessor">
+        <normalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz:read</value>
+                        <value>app:quiz:list</value>
+                    </values>
+                </value>
+            </values>
+        </normalizationContext>
+        <denormalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz:write</value>
+                        <value>app:quiz:edit</value>
+                    </values>
+                </value>
+            </values>
+        </denormalizationContext>
+
+        <operations>
+            <operation name="app_get_quizzes" class="ApiPlatform\Metadata\GetCollection" uriTemplate="/quizzes" method="GET">
+                <normalizationContext>
+                    <values>
+                        <value name="groups">app:quiz:list</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+            <operation name="app_get_quiz" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes/{id}"
+                method="GET">
+                <normalizationContext>
+                    <values>
+                        <value name="groups">app:quiz:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+            <operation
+                name="app_create_quiz"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/quizzes/new"
+                method="POST"
+                security="is_granted('ROLE_USER', object)"
+            >
+                <validationContext>
+                    <values>
+                        <value name="groups">app:quiz:write</value>
+                    </values>
+                </validationContext>
+            </operation>
+            <operation
+                name="app_edit_quiz"
+                method="PUT"
+                class="ApiPlatform\Metadata\Put"
+                uriTemplate="/quizzes/{id}"
+                security="is_granted('QUIZ_EDIT', object)"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">app:quiz:edit</value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">app:quiz:edit</value>
+                    </values>
+                </validationContext>
+            </operation>
+        </operations>
+    </resource>
+</resources>

@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AnswerRepository::class)]
 #[ORM\Table(name: 'app_answer')]
-#[ApiResource]
 class Answer
 {
     #[ORM\Id]
@@ -24,6 +23,10 @@ class Answer
 
     #[ORM\Column]
     private ?int $position = null;
+
+    #[ORM\ManyToOne(inversedBy: 'answers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Question $question = null;
 
     public function getId(): ?int
     {
@@ -62,6 +65,18 @@ class Answer
     public function setPosition(int $position): static
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function getQuestion(): ?Question
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(?Question $question): static
+    {
+        $this->question = $question;
 
         return $this;
     }

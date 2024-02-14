@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+>
+    <class name="App\Entity\Question">
+        <attribute name="id">
+            <group>app:quiz:read</group>
+        </attribute>
+        <attribute name="name">
+            <group>app:quiz:read</group>
+            <group>app:question:write</group>
+            <group>app:question:edit</group>
+        </attribute>
+        <attribute name="position">
+            <group>app:quiz:read</group>
+            <group>app:question:write</group>
+            <group>app:question:edit</group>
+        </attribute>
+        <attribute name="questionGroup">
+            <group>app:quiz:write</group>
+            <group>app:question:write</group>
+            <group>app:question:edit</group>
+        </attribute>
+        <attribute name="answers">
+            <group>app:quiz:read</group>
+            <group>app:question:write</group>
+            <group>app:question:edit</group>
+        </attribute>
+    </class>
+</serializer>

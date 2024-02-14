@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Functional;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 use Zenstruck\Foundry\Test\ResetDatabase;

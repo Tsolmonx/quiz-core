@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
 use App\Repository\QuizRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,9 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: QuizRepository::class)]
 #[ORM\Table(name: 'app_quiz')]
-#[ApiResource]
 class Quiz
 {
+    public const STATE_PENDING = 'pending';
+    public const STATE_APPROVED = 'approved';
+    public const STATE_CANCELLED = 'cancelled';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -24,20 +27,20 @@ class Quiz
     #[ORM\Column]
     private ?bool $enabled = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $createdAt = null;
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTime $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTime $updatedAt = null;
 
     #[ORM\Column(length: 50)]
     private ?string $type = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $requestStatus = null;
+    private ?string $requestStatus = self::STATE_PENDING;
 
     #[ORM\Column]
-    private ?int $level = null;
+    private ?int $level = 0;
 
     #[ORM\Column]
     private ?bool $isGrouped = null;
@@ -49,16 +52,21 @@ class Quiz
     #[ORM\ManyToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(nullable: true, referencedColumnName: 'id', name: 'parent_id')]
     private ?self $parent = null;
-
-    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private ?Collection $childrens = null;
 
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuestionGroup::class, orphanRemoval: true)]
     private Collection $questionGroups;
 
+    #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: Question::class, orphanRemoval: true)]
+    private Collection $questions;
+
     public function __construct()
     {
         $this->questionGroups = new ArrayCollection();
+        $this->childrens = new ArrayCollection();
+        $this->updatedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -90,24 +98,24 @@ class Quiz
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTime $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(?\DateTime $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
@@ -188,7 +196,23 @@ class Quiz
 
     public function getChildrens(): Collection
     {
-        return $this->childrens;
+        return $this->childrens ?? new ArrayCollection();
+    }
+
+    public function addChildren(Quiz $quiz): void
+    {
+        if (!$this->childrens->contains($quiz)) {
+            $this->childrens->add($quiz);
+            $quiz->setParent($this);
+        }
+    }
+
+    public function removeChildren(Quiz $quiz): void
+    {
+        if ($this->childrens->contains($quiz)) {
+            $this->childrens->removeElement($quiz);
+            $quiz->setParent(null);
+        }
     }
 
     /**
@@ -215,6 +239,36 @@ class Quiz
             // set the owning side to null (unless already changed)
             if ($questionGroup->getQuiz() === $this) {
                 $questionGroup->setQuiz(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Question>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): static
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions->add($question);
+            $question->setQuiz($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): static
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getQuiz() === $this) {
+                $question->setQuiz(null);
             }
         }
 

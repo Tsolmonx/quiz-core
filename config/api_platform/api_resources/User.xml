@@ -3,13 +3,13 @@
 <resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 http://api-platform.com/schema/metadata/resources-3.0.xsd">
-    <resource class="App\Entity\Quiz" shortName="Quiz">
+    <resource class="App\Entity\User" shortName="User">
         <normalizationContext>
             <values>
                 <value name="groups">
                     <values>
-                        <value>app:quiz:read</value>
-                        <value>app:quiz:list</value>
+                        <value>app:user:read</value>
+                        <value>app:user:list</value>
                     </values>
                 </value>
             </values>
@@ -18,40 +18,27 @@
             <values>
                 <value name="groups">
                     <values>
-                        <value>app:quiz:write</value>
+                        <value>app:user:write</value>
+                        <value>app:user:change-password</value>
                     </values>
                 </value>
             </values>
         </denormalizationContext>
 
         <operations>
-            <operation name="app_get" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes"
+            <operation name="app_get_user" class="ApiPlatform\Metadata\Get" uriTemplate="/users/{id}"
                 method="GET" />
-            <operation name="app_get" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes/{id}"
-                method="GET" />
-            <operation name="app_post" class="ApiPlatform\Metadata\Post" uriTemplate="/quizzes/new"
-                method="POST">
-                <validationContext>
-                    <values>
-                        <value name="groups">
-                            <values>
-                                <value>app:quiz:write</value>
-                            </values>
-                        </value>
-                    </values>
-                </validationContext>
-            </operation>
-            <operation
-                name="app_put"
-                method="PATCH"
-                class="ApiPlatform\Metadata\Put"
-                uriTemplate="/quizzes/{id}"
+            <operation name="app_register_user"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/register"
+                method="POST"
+                processor="App\State\UserPasswordHasher"
             >
                 <denormalizationContext>
                     <values>
                         <value name="groups">
                             <values>
-                                <value>app:quiz:write</value>
+                                <value>app:user:write</value>
                             </values>
                         </value>
                     </values>
@@ -60,7 +47,41 @@
                     <values>
                         <value name="groups">
                             <values>
-                                <value>app:quiz:write</value>
+                                <value>app:user:write</value>
+                            </values>
+                        </value>
+                    </values>
+                </validationContext>
+            </operation>
+            <operation
+                name="app_get_me"
+                method="GET"
+                class="ApiPlatform\Metadata\Get"
+                controller="App\Controller\User\GetMeAction"
+                uriTemplate="/me"
+                read="false"
+            />
+            <operation
+                name="app_put"
+                method="PATCH"
+                class="ApiPlatform\Metadata\Put"
+                uriTemplate="/users/{id}/change-password"
+                processor="App\State\UserPasswordHasher"
+            >
+                <denormalizationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:user:change-password</value>
+                            </values>
+                        </value>
+                    </values>
+                </denormalizationContext>
+                <validationContext>
+                    <values>
+                        <value name="groups">
+                            <values>
+                                <value>app:user:change-password</value>
                             </values>
                         </value>
                     </values>

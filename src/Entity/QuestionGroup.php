@@ -16,17 +16,17 @@ class QuestionGroup
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $position = null;
 
     #[ORM\ManyToOne(inversedBy: 'questionGroups')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Quiz $quiz = null;
 
-    #[ORM\OneToMany(mappedBy: 'questionQroup', targetEntity: Question::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'questionGroup', targetEntity: Question::class, orphanRemoval: true)]
     private Collection $questions;
 
     public function __construct()
@@ -87,7 +87,7 @@ class QuestionGroup
     {
         if (!$this->questions->contains($question)) {
             $this->questions->add($question);
-            $question->setQuestionQroup($this);
+            $question->setQuestionGroup($this);
         }
 
         return $this;
@@ -97,8 +97,8 @@ class QuestionGroup
     {
         if ($this->questions->removeElement($question)) {
             // set the owning side to null (unless already changed)
-            if ($question->getQuestionQroup() === $this) {
-                $question->setQuestionQroup(null);
+            if ($question->getQuestionGroup() === $this) {
+                $question->setQuestionGroup(null);
             }
         }
 
