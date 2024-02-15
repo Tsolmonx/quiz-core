@@ -1,0 +1,17 @@
+services:
+    quiz.date_filter:
+        parent: "api_platform.doctrine.orm.date_filter"
+        arguments: [{ createdAt: ~ }]
+        tags: ["api_platform.filter"]
+    quiz.search_filter:
+        parent: "api_platform.doctrine.orm.search_filter"
+        arguments: [
+                {
+                    title: "partial",
+                    type: "exact", # binary, nonbinary(hurdan bolon engiin)
+                    requestStatus: "exact", # default approved to show in public
+                    level: "exact", # default 1
+                    createdBy.id: "exact", # Owneriin testuudiig public avah
+                },
+            ]
+        tags: ["api_platform.filter"]
