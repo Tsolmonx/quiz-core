@@ -154,4 +154,11 @@ class Question
 
         return $this;
     }
+
+    public function getImagesByType(string $type)
+    {
+        return $this->images->filter(function (QuestionImage $image) use ($type) {
+            return $image->getType() === $type;
+        });
+    }
 }

@@ -32,9 +32,13 @@
                         <value name="groups">app:quiz:list</value>
                     </values>
                 </normalizationContext>
+                <filters>
+                    <filter>quiz.search_filter</filter>
+                    <filter>quiz.boolean_filter</filter>
+                    <filter>quiz.date_filter</filter>
+                </filters>
             </operation>
-            <operation name="app_get_quiz" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes/{id}"
-                method="GET">
+            <operation name="app_get_quiz" class="ApiPlatform\Metadata\Get" uriTemplate="/quizzes/{id}" method="GET">
                 <normalizationContext>
                     <values>
                         <value name="groups">app:quiz:read</value>
