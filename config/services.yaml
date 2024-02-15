@@ -1,3 +1,5 @@
+imports:
+    - { resource: filters.yaml }
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
@@ -59,3 +61,12 @@ services:
     App\Filesystem\Adapter\FlysystemFilesystemAdapter:
         arguments:
             - "@default.storage"
+
+    App\EventSubscriber\PaginateJsonSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    #must
+    App\State\QuizProvider:
+        bind:
+            $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection

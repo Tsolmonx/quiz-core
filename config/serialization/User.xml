@@ -9,12 +9,14 @@
             <group>app:user:read</group>
             <group>app:user:list</group>
             <group>app:quiz:read</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="email">
             <group>app:user:read</group>
             <group>app:user:list</group>
             <group>app:user:write</group>
             <group>app:quiz:read</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="plainPassword">
             <group>app:user:write</group>

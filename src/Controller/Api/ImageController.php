@@ -32,7 +32,7 @@ class ImageController extends AbstractController
     public function __construct(
         private EntityManagerInterface $em,
         private ImageService $imageService,
-        private NormalizerInterface $normalier
+        private NormalizerInterface $normalizer
     ) {
     }
 
@@ -51,7 +51,7 @@ class ImageController extends AbstractController
             }
 
             $image = $this->imageService->addQuizImage($quiz, $file, $type);
-            $normalizedImage = $this->normalier->normalize($image, null, ['groups' => 'app:image:read']);
+            $normalizedImage = $this->normalizer->normalize($image, null, ['groups' => 'app:image:read']);
 
             return new JsonResponse($normalizedImage, 201);
         } catch (HttpException $e) {
@@ -72,7 +72,7 @@ class ImageController extends AbstractController
             }
 
             $image = $this->imageService->addQuestionImage($question, $file, $type);
-            $normalizedImage = $this->normalier->normalize($image, null, ['groups' => 'app:image:read']);
+            $normalizedImage = $this->normalizer->normalize($image, null, ['groups' => 'app:image:read']);
 
             return new JsonResponse($normalizedImage, 201);
         } catch (HttpException $e) {
@@ -93,7 +93,7 @@ class ImageController extends AbstractController
             }
 
             $image = $this->imageService->addAnswerImage($answer, $file, $type);
-            $normalizedImage = $this->normalier->normalize($image, null, ['groups' => 'app:image:read']);
+            $normalizedImage = $this->normalizer->normalize($image, null, ['groups' => 'app:image:read']);
 
             return new JsonResponse($normalizedImage, 201);
         } catch (HttpException $e) {
@@ -115,7 +115,7 @@ class ImageController extends AbstractController
             }
 
             $image = $this->imageService->addUserImage($user, $file, $type);
-            $normalizedImage = $this->normalier->normalize($image, null, ['groups' => 'app:image:read']);
+            $normalizedImage = $this->normalizer->normalize($image, null, ['groups' => 'app:image:read']);
 
             return new JsonResponse($normalizedImage, 201);
         } catch (HttpException $e) {

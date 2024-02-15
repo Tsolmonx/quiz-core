@@ -43,10 +43,40 @@ final class QuizProcessor implements ProcessorInterface
             $this->entityManager->persist($group);
             $this->entityManager->persist($data);
         }
+
+        // Set is grouped true if has children
+        if (count($data->getChildrens()) > 0) {
+            $data->setIsGrouped(true);
+        } else {
+            $data->setIsGrouped(false);
+        }
+
+        // Set is grouped true if parent has children
+        if ($data->getParent() instanceof Quiz) {
+            $parent = $data->getParent();
+            $parent->setIsGrouped(true);
+        }
+
+        // Calculate the level
+        $level = $this->calculateLevel($data, 1);
+        $data->setLevel($level);
+
+        // Set updatedAt
         $data->setUpdatedAt(new \DateTime());
 
         $result = $this->persistProcessor->process($data, $operation, $uriVariables, $context);
 
         return $result;
+    }
+
+    public function calculateLevel(Quiz $quiz, $currentLevel = 1): int
+    {
+        if ($quiz->getParent() instanceof Quiz) {
+            // If the quiz has a parent, recursively calculate the level
+            return $this->calculateLevel($quiz->getParent(), $currentLevel + 1);
+        } else {
+            // Base case: the quiz has no parent, return the current level
+            return $currentLevel;
+        }
     }
 }

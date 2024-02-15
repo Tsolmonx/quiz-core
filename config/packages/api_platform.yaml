@@ -17,6 +17,8 @@ api_platform:
         jsonopenapi: ["application/vnd.openapi+json"]
         html: ["text/html"]
     defaults:
+        pagination_client_items_per_page: true # Enables the client side control over limit
+        pagination_items_per_page: 20
         normalization_context:
             skip_null_values: false
         stateless: true
@@ -25,8 +27,11 @@ api_platform:
         extra_properties:
             #     standard_put: true
             rfc_7807_compliant_errors: true
-    event_listeners_backward_compatibility_layer: false
+    event_listeners_backward_compatibility_layer: true # This makes it possible to ViewEvent hit
     keep_legacy_inflector: false
+    collection:
+        pagination:
+            items_per_page_parameter_name: limit
     swagger:
         api_keys:
             JWT:

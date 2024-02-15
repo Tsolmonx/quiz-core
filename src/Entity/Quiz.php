@@ -51,6 +51,8 @@ class Quiz
     #[ORM\ManyToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(nullable: true, referencedColumnName: 'id', name: 'parent_id')]
     private ?self $parent = null;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private ?Collection $childrens = null;
 
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuestionGroup::class, orphanRemoval: true)]
@@ -62,6 +64,9 @@ class Quiz
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: QuizImage::class)]
     private Collection $images;
 
+    #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuizTaker::class)]
+    private Collection $quizTakers;
+
     public function __construct()
     {
         $this->questionGroups = new ArrayCollection();
@@ -70,6 +75,7 @@ class Quiz
         $this->createdAt = new \DateTime();
         $this->questions = new ArrayCollection();
         $this->images = new ArrayCollection();
+        $this->quizTakers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -197,9 +203,12 @@ class Quiz
         return $this;
     }
 
-    public function getChildrens(): Collection
+    /**
+     * @return Collection|null<int, Quiz>
+     */
+    public function getChildrens(): ?Collection
     {
-        return $this->childrens ?? new ArrayCollection();
+        return $this->childrens;
     }
 
     public function addChildren(Quiz $quiz): void
@@ -302,6 +311,43 @@ class Quiz
             // set the owning side to null (unless already changed)
             if ($image->getOwner() === $this) {
                 $image->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getImagesByType(string $type)
+    {
+        return $this->images->filter(function (QuizImage $image) use ($type) {
+            return $image->getType() === $type;
+        });
+    }
+
+    /**
+     * @return Collection<int, QuizTaker>
+     */
+    public function getQuizTakers(): Collection
+    {
+        return $this->quizTakers;
+    }
+
+    public function addQuizTaker(QuizTaker $quizTaker): static
+    {
+        if (!$this->quizTakers->contains($quizTaker)) {
+            $this->quizTakers->add($quizTaker);
+            $quizTaker->setQuiz($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuizTaker(QuizTaker $quizTaker): static
+    {
+        if ($this->quizTakers->removeElement($quizTaker)) {
+            // set the owning side to null (unless already changed)
+            if ($quizTaker->getQuiz() === $this) {
+                $quizTaker->setQuiz(null);
             }
         }
 

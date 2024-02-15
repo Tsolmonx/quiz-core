@@ -10,9 +10,13 @@ use App\Entity\Question;
 use App\Entity\QuestionImage;
 use App\Entity\Quiz;
 use App\Entity\QuizImage;
+use App\Entity\QuizTaker;
+use App\Entity\User;
 use App\Service\ImageUploaderService;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 class QuizService
 {
@@ -52,5 +56,22 @@ class QuizService
         $this->em->persist($answer);
 
         return $answer;
+    }
+
+    public function takeQuiz(Quiz $quiz, User $user): QuizTaker
+    {
+        $currentDate = new DateTime();
+        $expire = $currentDate->modify('+7 days'); // Add 7 days to the current date
+
+        $quizTaker = new QuizTaker();
+        $quizTaker->setIsEnabled(true);
+        $quizTaker->setQuizTaker($user);
+        $quizTaker->setLicenseExpireDate($expire);
+        $quiz->addQuizTaker($quizTaker);
+
+        $this->em->persist($quizTaker);
+        $this->em->flush();
+
+        return $quizTaker;
     }
 }

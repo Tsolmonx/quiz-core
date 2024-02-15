@@ -3,6 +3,10 @@ services:
         parent: "api_platform.doctrine.orm.date_filter"
         arguments: [{ createdAt: ~ }]
         tags: ["api_platform.filter"]
+    quiz.boolean_filter:
+        parent: "api_platform.doctrine.orm.date_filter"
+        arguments: [{ isGrouped: ~, enabled: ~ }]
+        tags: ["api_platform.filter"]
     quiz.search_filter:
         parent: "api_platform.doctrine.orm.search_filter"
         arguments: [
