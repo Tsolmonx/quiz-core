@@ -8,34 +8,40 @@
         <attribute name="id">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="title">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
             <group>app:quiz:write</group>
             <group>app:quiz:edit</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="enabled">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
             <group>app:quiz:write</group>
             <group>app:quiz:edit</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="type">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
             <group>app:quiz:write</group>
             <group>app:quiz:edit</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="isGrouped">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
             <group>app:quiz:write</group>
             <group>app:quiz:edit</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="requestStatus">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="questionGroups">
             <group>app:quiz:read</group>
@@ -58,10 +64,12 @@
         <attribute name="createdAt">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="createdBy">
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
+            <group>app:quiz_taker:read</group>
         </attribute>
         <attribute name="images">
             <group>app:quiz:read</group>

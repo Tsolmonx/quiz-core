@@ -65,3 +65,7 @@ services:
     App\EventSubscriber\PaginateJsonSubscriber:
         tags:
             - { name: kernel.event_subscriber }
+
+    App\State\QuizTakersQuizzesProvider:
+        bind:
+            $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection

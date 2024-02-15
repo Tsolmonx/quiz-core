@@ -35,6 +35,18 @@ class QuizTaker
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $licenseExpireDate = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $state = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $paymentState = null;
+
+    public function __construct()
+    {
+        $this->updatedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -108,6 +120,30 @@ class QuizTaker
     public function setLicenseExpireDate(?\DateTimeInterface $licenseExpireDate): static
     {
         $this->licenseExpireDate = $licenseExpireDate;
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getPaymentState(): ?string
+    {
+        return $this->paymentState;
+    }
+
+    public function setPaymentState(?string $paymentState): static
+    {
+        $this->paymentState = $paymentState;
 
         return $this;
     }

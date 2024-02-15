@@ -26,6 +26,25 @@
         </denormalizationContext>
 
         <operations>
+            <operation
+                name="app_get_my_taken_quizzes"
+                class="ApiPlatform\Metadata\GetCollection"
+                uriTemplate="/me/quizzes"
+                method="GET"
+                security="is_granted('ROLE_USER')"
+                provider="App\State\QuizTakersQuizzesProvider"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">app:quiz:list</value>
+                    </values>
+                </normalizationContext>
+                <filters>
+                    <filter>quiz.search_filter</filter>
+                    <filter>quiz.boolean_filter</filter>
+                    <filter>quiz.date_filter</filter>
+                </filters>
+            </operation>
             <operation name="app_get_quizzes" class="ApiPlatform\Metadata\GetCollection" uriTemplate="/quizzes" method="GET">
                 <normalizationContext>
                     <values>

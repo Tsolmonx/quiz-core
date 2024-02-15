@@ -47,3 +47,9 @@ app_api_user_delete_image:
     methods: [DELETE]
     defaults:
         _controller: App\Controller\Api\ImageController::deleteUserImage
+
+app_api_quiz_take_quiz:
+    path: /api/quizzes/{id}/take-quiz
+    methods: [PUT]
+    defaults:
+        _controller: App\Controller\Api\Action\TakeQuiz
