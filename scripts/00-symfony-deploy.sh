@@ -13,6 +13,9 @@ done
 echo "Migrating..."
 bin/console doctrine:migrations:migrate --no-interaction
 
+echo "generating public.pem, private.pem"
+php bin/console lexik:jwt:generate-keypair
+
 echo "Caching config..."
 APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
 

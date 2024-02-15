@@ -1,0 +1,49 @@
+# ADD IMAGES
+app_api_quiz_add_image:
+    path: /api/quizzes/{quizId}/images/new
+    methods: [POST]
+    defaults:
+        _controller: App\Controller\Api\ImageController::addQuizImage
+
+app_api_question_add_image:
+    path: /api/questions/{questionId}/images/new
+    methods: [POST]
+    defaults:
+        _controller: App\Controller\Api\ImageController::addQuestionImage
+
+app_api_answer_add_image:
+    path: /api/answers/{answerId}/images/new
+    methods: [POST]
+    defaults:
+        _controller: App\Controller\Api\ImageController::addAnswerImage
+
+app_api_user_add_image:
+    path: /api/users/{userId}/images/new
+    methods: [POST]
+    defaults:
+        _controller: App\Controller\Api\ImageController::addUserImage
+
+# DELETE IMAGES
+app_api_quiz_delete_image:
+    path: /api/quizzes/{quizId}/images/{id}
+    methods: [DELETE]
+    defaults:
+        _controller: App\Controller\Api\ImageController::deleteQuizImage
+
+app_api_question_delete_image:
+    path: /api/questions/{questionId}/images/{id}
+    methods: [DELETE]
+    defaults:
+        _controller: App\Controller\Api\ImageController::deleteQuestionImage
+
+app_api_answer_delete_image:
+    path: /api/answers/{answerId}/images/{id}
+    methods: [DELETE]
+    defaults:
+        _controller: App\Controller\Api\ImageController::deleteAnswerImage
+
+app_api_user_delete_image:
+    path: /api/users/{userId}/images/{id}
+    methods: [DELETE]
+    defaults:
+        _controller: App\Controller\Api\ImageController::deleteUserImage

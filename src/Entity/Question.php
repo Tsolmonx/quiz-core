@@ -33,9 +33,13 @@ class Question
     #[ORM\JoinColumn(nullable: false)]
     private ?Quiz $quiz = null;
 
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: QuestionImage::class)]
+    private Collection $images;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,6 +121,36 @@ class Question
     public function setQuiz(?Quiz $quiz): static
     {
         $this->quiz = $quiz;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuestionImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(QuestionImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(QuestionImage $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getOwner() === $this) {
+                $image->setOwner(null);
+            }
+        }
 
         return $this;
     }

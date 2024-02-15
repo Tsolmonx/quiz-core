@@ -1,9 +1,17 @@
 api_auth:
-  path: /api/auth
-  methods: ["POST"]
+    path: /api/auth
+    methods: ["POST"]
+
+app_api:
+    resource:
+        path: ../src/Controller/Api
+        namespace: App\Controller\Api
+    type: annotation
+    defaults:
+        _format: json
 
 controllers:
-  resource:
-    path: ../src/Controller/
-    namespace: App\Controller
-  type: attribute
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute

@@ -7,16 +7,19 @@ namespace App\Service;
 use ApiPlatform\Api\IriConverterInterface;
 use App\Entity\Answer;
 use App\Entity\Question;
-use App\Entity\QuestionGroup;
+use App\Entity\QuestionImage;
 use App\Entity\Quiz;
+use App\Entity\QuizImage;
+use App\Service\ImageUploaderService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class QuizService
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private IriConverterInterface $iriConverter
+        private IriConverterInterface $iriConverter,
+        private ImageUploaderService $imageUploaderService
     ) {
     }
 

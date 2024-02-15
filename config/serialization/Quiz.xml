@@ -63,5 +63,9 @@
             <group>app:quiz:read</group>
             <group>app:quiz:list</group>
         </attribute>
+        <attribute name="images">
+            <group>app:quiz:read</group>
+            <group>app:quiz:list</group>
+        </attribute>
     </class>
 </serializer>

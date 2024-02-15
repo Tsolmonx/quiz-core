@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+>
+    <class name="App\Entity\QuizImage">
+        <attribute name="id">
+            <group>app:image:read</group>
+            <group>app:image:list</group>
+            <group>app:quiz:list</group>
+            <group>app:quiz:read</group>
+        </attribute>
+        <attribute name="type">
+            <group>app:quiz:read</group>
+            <group>app:quiz:list</group>
+            <group>app:image:read</group>
+            <group>app:image:list</group>
+        </attribute>
+        <attribute name="path">
+            <group>app:quiz:read</group>
+            <group>app:quiz:list</group>
+            <group>app:image:read</group>
+            <group>app:image:list</group>
+        </attribute>
+    </class>
+</serializer>

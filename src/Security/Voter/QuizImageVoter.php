@@ -2,17 +2,17 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Question;
 use App\Entity\Quiz;
+use App\Entity\QuizImage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class QuestionVoter extends Voter
+class QuizImageVoter extends Voter
 {
-    public const EDIT = 'QUESTION_EDIT';
-    public const CREATE = 'QUESTION_CREATE';
+    public const CREATE = 'QUIZ_IMAGE_CREATE';
+    public const DELETE = 'QUIZ_IMAGE_DELETE';
 
     public function __construct(private EntityManagerInterface $em)
     {
@@ -22,9 +22,9 @@ class QuestionVoter extends Voter
     {
         if (is_string($subject)) {
             $entity = $this->em->getRepository(Quiz::class)->find((int) $subject);
-            return in_array($attribute, [self::EDIT, self::CREATE]) && $entity instanceof Quiz;
-        } elseif ($subject instanceof Question) {
-            return in_array($attribute, [self::EDIT, self::CREATE]);
+            return in_array($attribute, [self::CREATE, self::DELETE]) && $entity instanceof Quiz;
+        } elseif ($subject instanceof QuizImage) {
+            return in_array($attribute, [self::CREATE, self::DELETE]);
         }
         return false;
     }
@@ -36,7 +36,6 @@ class QuestionVoter extends Voter
             return false;
         }
 
-        /** @var Question $subject */
         switch ($attribute) {
             case self::CREATE:
                 $quiz = $this->em->getRepository(Quiz::class)->find((int) $subject);
@@ -45,9 +44,8 @@ class QuestionVoter extends Voter
                 }
 
                 break;
-            case self::EDIT:
-                $quiz = $subject->getQuestionGroup()->getQuiz();
-                if ($quiz->getCreatedBy() === $user) {
+            case self::DELETE:
+                if ($subject->getOwner()->getCreatedBy() === $user) {
                     return true;
                 }
 
