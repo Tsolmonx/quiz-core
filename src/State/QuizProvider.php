@@ -10,8 +10,11 @@ use App\Entity\QuizTaker;
 use App\Entity\User;
 use App\Repository\QuizRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
-class QuizTakersQuizzesProvider implements ProviderInterface
+class QuizProvider implements ProviderInterface
 {
     public function __construct(
         private QuizRepository $quizRepository,
@@ -22,17 +25,40 @@ class QuizTakersQuizzesProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-
-        $token = $this->tokenStorage->getToken();
-        /** @var User $user */
-        $user = $token->getUser();
         $queryBuilder = $this->quizRepository->createQueryBuilder('o');
         $alias = $queryBuilder->getRootAliases()[0];
-        // dd($user->getId());
-        $queryBuilder
-            ->leftJoin(QuizTaker::class, 'qt', 'WITH', "$alias.id = qt.quiz")
-            ->andWhere('qt.quizTaker = :quizTaker')
-            ->setParameter('quizTaker', $user);
+
+        if (array_key_exists('filters', $context) && array_key_exists('myTaken', $context['filters']) && (bool) $context['filters']['myTaken'] === true) {
+            $token = $this->tokenStorage->getToken();
+            if (!$token instanceof TokenInterface) {
+                throw new TokenNotFoundException();
+            }
+            /** @var User $user */
+            $user = $token->getUser();
+            if (!$user instanceof User) {
+                throw new AccessDeniedException();
+            }
+
+            $queryBuilder
+                ->leftJoin(QuizTaker::class, 'qt', 'WITH', "$alias.id = qt.quiz")
+                ->andWhere('qt.quizTaker = :quizTaker')
+                ->setParameter('quizTaker', $user);
+        } elseif (array_key_exists('filters', $context) && array_key_exists('myCreated', $context['filters']) && (bool) $context['filters']['myCreated'] === true) {
+            $token = $this->tokenStorage->getToken();
+            if (!$token instanceof TokenInterface) {
+                throw new TokenNotFoundException();
+            }
+            /** @var User $user */
+            $user = $token->getUser();
+            if (!$user instanceof User) {
+                throw new AccessDeniedException();
+            }
+
+            $queryBuilder
+                ->andWhere("$alias.createdBy = :owner")
+                ->setParameter('owner', $user);
+        }
+
 
         $queryNameGenerator = new QueryNameGenerator();
         foreach ($this->collectionExtensions as $extension) {
@@ -48,7 +74,6 @@ class QuizTakersQuizzesProvider implements ProviderInterface
                 $queryBuilder,
                 $queryNameGenerator,
                 $context['resource_class'],
-                // $context['operation_name'],
                 $operation,
                 $context
             );

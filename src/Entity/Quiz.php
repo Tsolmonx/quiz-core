@@ -51,6 +51,8 @@ class Quiz
     #[ORM\ManyToOne(targetEntity: self::class)]
     #[ORM\JoinColumn(nullable: true, referencedColumnName: 'id', name: 'parent_id')]
     private ?self $parent = null;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
     private ?Collection $childrens = null;
 
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuestionGroup::class, orphanRemoval: true)]
@@ -201,9 +203,12 @@ class Quiz
         return $this;
     }
 
-    public function getChildrens(): Collection
+    /**
+     * @return Collection|null<int, Quiz>
+     */
+    public function getChildrens(): ?Collection
     {
-        return $this->childrens ?? new ArrayCollection();
+        return $this->childrens;
     }
 
     public function addChildren(Quiz $quiz): void

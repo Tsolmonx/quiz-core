@@ -66,6 +66,7 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    App\State\QuizTakersQuizzesProvider:
+    #must
+    App\State\QuizProvider:
         bind:
             $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
