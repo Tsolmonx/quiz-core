@@ -24,6 +24,10 @@ services:
         resource: "../src/Controller"
         tags: ["controller.service_arguments"]
 
+    App\Exception\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     App\State\QuizProcessor:
         arguments:
             $persistProcessor: "@api_platform.doctrine.orm.state.persist_processor"
@@ -39,3 +43,19 @@ services:
 
     app.factory.question_group:
         class: App\Factory\QuestionGroupFactory
+
+    app.service.quiz:
+        class: App\Service\QuizService
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@ApiPlatform\\Api\\IriConverterInterface"
+            - "@App\\Service\\ImageUploaderService"
+
+    app.service.image_uploader:
+        class: App\Service\ImageUploaderService
+        arguments:
+            $filesystem: "@App\\Filesystem\\Adapter\\FlysystemFilesystemAdapter"
+
+    App\Filesystem\Adapter\FlysystemFilesystemAdapter:
+        arguments:
+            - "@default.storage"

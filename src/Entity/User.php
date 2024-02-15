@@ -39,9 +39,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'createdBy', targetEntity: Quiz::class)]
     private Collection $quizzes;
 
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: UserImage::class)]
+    private Collection $images;
+
     public function __construct()
     {
         $this->quizzes = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +153,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($quiz->getCreatedBy() === $this) {
                 $quiz->setCreatedBy(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(UserImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(UserImage $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getOwner() === $this) {
+                $image->setOwner(null);
             }
         }
 

@@ -60,6 +60,9 @@ class Quiz
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: Question::class, orphanRemoval: true)]
     private Collection $questions;
 
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: QuizImage::class)]
+    private Collection $images;
+
     public function __construct()
     {
         $this->questionGroups = new ArrayCollection();
@@ -67,6 +70,7 @@ class Quiz
         $this->updatedAt = new \DateTime();
         $this->createdAt = new \DateTime();
         $this->questions = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -269,6 +273,36 @@ class Quiz
             // set the owning side to null (unless already changed)
             if ($question->getQuiz() === $this) {
                 $question->setQuiz(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuizImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(QuizImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(QuizImage $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getOwner() === $this) {
+                $image->setOwner(null);
             }
         }
 
