@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 http://api-platform.com/schema/metadata/resources-3.0.xsd">
+    <resource class="App\Entity\QuizResponse" uriTemplate="/api/quizzes/{quizId}/responses">
+        <uriVariables>
+            <uriVariable parameterName="quizId" fromClass="App\Entity\QuizResponse" toProperty="quiz"/>
+        </uriVariables>
+        <normalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz_response:read</value>
+                        <value>app:quiz_response:list</value>
+                    </values>
+                </value>
+            </values>
+        </normalizationContext>
+        <denormalizationContext>
+            <values>
+                <value name="groups">
+                    <values>
+                        <value>app:quiz_response:write</value>
+                        <value>app:quiz_response:edit</value>
+                    </values>
+                </value>
+            </values>
+        </denormalizationContext>
+    </resource>
+</resources>

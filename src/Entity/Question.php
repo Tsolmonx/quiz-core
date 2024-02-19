@@ -36,6 +36,9 @@ class Question
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: QuestionImage::class)]
     private Collection $images;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $choiceType = null;
+
     public function __construct()
     {
         $this->answers = new ArrayCollection();
@@ -160,5 +163,17 @@ class Question
         return $this->images->filter(function (QuestionImage $image) use ($type) {
             return $image->getType() === $type;
         });
+    }
+
+    public function getChoiceType(): ?string
+    {
+        return $this->choiceType;
+    }
+
+    public function setChoiceType(?string $choiceType): static
+    {
+        $this->choiceType = $choiceType;
+
+        return $this;
     }
 }

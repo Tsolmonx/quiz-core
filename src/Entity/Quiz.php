@@ -67,6 +67,9 @@ class Quiz
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuizTaker::class)]
     private Collection $quizTakers;
 
+    #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuizResponse::class)]
+    private Collection $quizResponses;
+
     public function __construct()
     {
         $this->questionGroups = new ArrayCollection();
@@ -76,6 +79,7 @@ class Quiz
         $this->questions = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->quizTakers = new ArrayCollection();
+        $this->quizResponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -352,5 +356,42 @@ class Quiz
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, QuizResponse>
+     */
+    public function getQuizResponses(): Collection
+    {
+        return $this->quizResponses;
+    }
+
+    public function addQuizResponse(QuizResponse $quizResponse): static
+    {
+        if (!$this->quizResponses->contains($quizResponse)) {
+            $this->quizResponses->add($quizResponse);
+            $quizResponse->setQuiz($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuizResponse(QuizResponse $quizResponse): static
+    {
+        if ($this->quizResponses->removeElement($quizResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($quizResponse->getQuiz() === $this) {
+                $quizResponse->setQuiz(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuizResponsesByUserAndAttempt(User $user, int $attempt): Collection
+    {
+        return $this->quizResponses->filter(function (QuizResponse $quizResponse) use ($user, $attempt) {
+            return $quizResponse->getQuizTaker() === $user && $quizResponse->getAttempt() === $attempt;
+        });
     }
 }
