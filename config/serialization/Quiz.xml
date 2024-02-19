@@ -1,79 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <serializer xmlns="http://symfony.com/schema/dic/serializer-mapping"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="App\Entity\Quiz">
-        <attribute name="id">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="title">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz:write</group>
-            <group>app:quiz:edit</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="enabled">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz:write</group>
-            <group>app:quiz:edit</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="type">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz:write</group>
-            <group>app:quiz:edit</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="isGrouped">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz:write</group>
-            <group>app:quiz:edit</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="requestStatus">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="questionGroups">
-            <group>app:quiz:read</group>
-        </attribute>
-        <attribute name="parent">
-            <group>app:quiz:write</group>
-            <group>app:quiz:edit</group>
-        </attribute>
-        <attribute name="childrens">
-            <group>app:quiz:read</group>
-        </attribute>
-        <attribute name="level">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-        </attribute>
-        <attribute name="updatedAt">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-        </attribute>
-        <attribute name="createdAt">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="createdBy">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-            <group>app:quiz_taker:read</group>
-        </attribute>
-        <attribute name="images">
-            <group>app:quiz:read</group>
-            <group>app:quiz:list</group>
-        </attribute>
-    </class>
+  <class name="App\Entity\Quiz">
+    <attribute name="id">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="title">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="enabled">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="price">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="description">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="type">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="isGrouped">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="requestStatus">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="questionGroups">
+      <group>app:quiz:read</group>
+    </attribute>
+    <attribute name="parent">
+      <group>app:quiz:write</group>
+      <group>app:quiz:edit</group>
+    </attribute>
+    <attribute name="childrens">
+      <group>app:quiz:read</group>
+    </attribute>
+    <attribute name="level">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+    </attribute>
+    <attribute name="updatedAt">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+    </attribute>
+    <attribute name="createdAt">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="createdBy">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+      <group>app:quiz_taker:read</group>
+    </attribute>
+    <attribute name="images">
+      <group>app:quiz:read</group>
+      <group>app:quiz:list</group>
+    </attribute>
+  </class>
 </serializer>

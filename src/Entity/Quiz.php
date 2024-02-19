@@ -67,6 +67,15 @@ class Quiz
     #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuizTaker::class)]
     private Collection $quizTakers;
 
+    #[ORM\OneToMany(mappedBy: 'quiz', targetEntity: QuizResponse::class)]
+    private Collection $quizResponses;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $price = null;
+
     public function __construct()
     {
         $this->questionGroups = new ArrayCollection();
@@ -76,6 +85,7 @@ class Quiz
         $this->questions = new ArrayCollection();
         $this->images = new ArrayCollection();
         $this->quizTakers = new ArrayCollection();
+        $this->quizResponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -350,6 +360,67 @@ class Quiz
                 $quizTaker->setQuiz(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuizResponse>
+     */
+    public function getQuizResponses(): Collection
+    {
+        return $this->quizResponses;
+    }
+
+    public function addQuizResponse(QuizResponse $quizResponse): static
+    {
+        if (!$this->quizResponses->contains($quizResponse)) {
+            $this->quizResponses->add($quizResponse);
+            $quizResponse->setQuiz($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuizResponse(QuizResponse $quizResponse): static
+    {
+        if ($this->quizResponses->removeElement($quizResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($quizResponse->getQuiz() === $this) {
+                $quizResponse->setQuiz(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuizResponsesByUserAndAttempt(User $user, int $attempt): Collection
+    {
+        return $this->quizResponses->filter(function (QuizResponse $quizResponse) use ($user, $attempt) {
+            return $quizResponse->getQuizTaker() === $user && $quizResponse->getAttempt() === $attempt;
+        });
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?int $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }

@@ -10,9 +10,11 @@ use App\Entity\Question;
 use App\Entity\QuestionImage;
 use App\Entity\Quiz;
 use App\Entity\QuizImage;
+use App\Entity\QuizResponse;
 use App\Entity\QuizTaker;
 use App\Entity\User;
 use App\Service\ImageUploaderService;
+use App\Validator\QuizValidator;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -23,7 +25,8 @@ class QuizService
     public function __construct(
         private EntityManagerInterface $em,
         private IriConverterInterface $iriConverter,
-        private ImageUploaderService $imageUploaderService
+        private ImageUploaderService $imageUploaderService,
+        private QuizValidator $quizValidator
     ) {
     }
 
@@ -73,5 +76,35 @@ class QuizService
         $this->em->flush();
 
         return $quizTaker;
+    }
+
+    public function submitQuizAnswers(Quiz $quiz, User $user, array $array)
+    {
+        $this->quizValidator->validateSubmitQuizAnswers($array);
+        foreach ($array as $params) {
+            $attempt = 1;
+            $prevAttempts = $this->em->getRepository(QuizResponse::class)->findBy(['quizTaker' => $user, 'quiz' => $quiz], ['attempt' => 'desc']);
+            if (count($prevAttempts) > 0) {
+                $lastAttempt = $prevAttempts[0];
+                if ($lastAttempt instanceof QuizResponse) {
+                    $attempt = $lastAttempt->getAttempt() + 1;
+                }
+            }
+
+            $quizResponse = new QuizResponse();
+            $quizResponse->setQuizTaker($user);
+            $quizResponse->setAttempt($attempt);
+            $question = $this->iriConverter->getResourceFromIri($params['questionId']);
+            $quizResponse->setQuestion($question);
+            $quizResponse->setQuiz($quiz);
+            foreach ($params['answers'] as $answerId) {
+                $answer = $this->iriConverter->getResourceFromIri($answerId);
+                $quizResponse->addSelectedAnswer($answer);
+            }
+            $this->em->persist($quizResponse);
+        }
+        $this->em->flush();
+
+        return $quiz->getQuizResponsesByUserAndAttempt($user, $attempt);
     }
 }
