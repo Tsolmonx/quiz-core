@@ -10,7 +10,6 @@ use App\Entity\Quiz;
 use App\Entity\User;
 use App\Service\QuizService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -40,10 +39,10 @@ class SubmitQuizAnswers
         try {
             $quiz = $this->em->getRepository(Quiz::class)->find((int) $id);
             $quizResponses = $this->quizService->submitQuizAnswers($quiz, $user, $params);
-            $normalizedResponse = $this->normalizer->normalize($quizResponses, 'application/json', ['groups' => 'app:quiz_response:list']);
+            $normalizedResponse = $this->normalizer->normalize($quizResponses, null, ['groups' => 'app:quiz_response:read']);
         } catch (HttpException $e) {
             throw new HttpException($e->getStatusCode(), $e->getMessage());
         }
-        return Helper::JsonResponse(0, array_values($normalizedResponse));
+        return Helper::JsonResponse(0, $normalizedResponse);
     }
 }

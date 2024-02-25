@@ -50,4 +50,9 @@ class QuizDetailNormalizer implements NormalizerInterface, NormalizerAwareInterf
 
         return $data instanceof Quiz && $context['groups'] === 'app:quiz:read';
     }
+
+    public function getSupportedTypes($format)
+    {
+        return ['application/json', 'application/ld+json'];
+    }
 }

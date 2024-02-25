@@ -82,6 +82,15 @@
                     </values>
                 </validationContext>
             </operation>
+            <operation
+                name="app_add_question"
+                class="ApiPlatform\Metadata\Post"
+                uriTemplate="/quizzes/{id}/questions/new"
+                method="POST"
+                read="false"
+                controller="App\Controller\Api\Action\CreateQuestion"
+                security="is_granted('QUESTION_CREATE', request.attributes.get('id'))"
+            />
         </operations>
     </resource>
 </resources>
