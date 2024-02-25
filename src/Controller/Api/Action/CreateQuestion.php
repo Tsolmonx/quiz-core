@@ -16,7 +16,7 @@ class CreateQuestion
     {
     }
 
-    public function __invoke(Request $request, $quizId)
+    public function __invoke(Request $request, $id)
     {
         if ($request->request->all()) {
             $params = $request->request->all();
@@ -25,11 +25,11 @@ class CreateQuestion
         }
 
         try {
-            $quiz = $this->em->getRepository(Quiz::class)->find((int) $quizId);
-            $question = $this->quizService->createQuestion($quiz, $params);
+            $quiz = $this->em->getRepository(Quiz::class)->find((int) $id);
+            $quiz = $this->quizService->addQuestions($quiz, $params);
         } catch (HttpException $e) {
             throw new HttpException($e->getStatusCode(), $e->getMessage());
         }
-        return $question;
+        return $quiz;
     }
 }

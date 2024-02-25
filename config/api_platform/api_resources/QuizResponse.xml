@@ -3,10 +3,7 @@
 <resources xmlns="https://api-platform.com/schema/metadata/resources-3.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="https://api-platform.com/schema/metadata/resources-3.0 http://api-platform.com/schema/metadata/resources-3.0.xsd">
-    <resource class="App\Entity\QuizResponse" uriTemplate="/api/quizzes/{quizId}/responses">
-        <uriVariables>
-            <uriVariable parameterName="quizId" fromClass="App\Entity\QuizResponse" toProperty="quiz"/>
-        </uriVariables>
+    <resource class="App\Entity\QuizResponse" shortName="QuizResponse">
         <normalizationContext>
             <values>
                 <value name="groups">
@@ -27,5 +24,33 @@
                 </value>
             </values>
         </denormalizationContext>
+        <operations>
+            <operation
+                name="app_get_my_quiz_responses"
+                class="ApiPlatform\Metadata\GetCollection"
+                uriTemplate="/my-quiz-responses"
+                method="GET"
+                security="is_granted('ROLE_USER')"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">app:quiz_response:list</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+            <operation
+                name="app_get_my_quiz_response_detail"
+                class="ApiPlatform\Metadata\GetCollection"
+                uriTemplate="/my-quiz-responses/{id}"
+                method="GET"
+                security="is_granted('ROLE_USER')"
+            >
+                <normalizationContext>
+                    <values>
+                        <value name="groups">app:quiz_response:read</value>
+                    </values>
+                </normalizationContext>
+            </operation>
+        </operations>
     </resource>
 </resources>

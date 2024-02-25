@@ -16,6 +16,7 @@ class NotFoundBaseException extends \Exception
     public const QUESTION_IMAGE_NOT_FOUND = 1005;
     public const ANSWER_IMAGE_NOT_FOUND = 1006;
     public const USER_IMAGE_NOT_FOUND = 1007;
+    public const QUESTION_GROUP_NOT_FOUND = 1008;
 
     /**
      * @param string $message

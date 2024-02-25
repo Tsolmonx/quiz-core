@@ -7,16 +7,19 @@
     <class name="App\Entity\Question">
         <attribute name="id">
             <group>app:quiz:read</group>
+            <group>app:quiz_response:read</group>
         </attribute>
         <attribute name="name">
             <group>app:quiz:read</group>
             <group>app:question:write</group>
             <group>app:question:edit</group>
+            <group>app:quiz_response:read</group>
         </attribute>
         <attribute name="position">
             <group>app:quiz:read</group>
             <group>app:question:write</group>
             <group>app:question:edit</group>
+            <group>app:quiz_response:read</group>
         </attribute>
         <attribute name="questionGroup">
             <group>app:quiz:write</group>

@@ -70,3 +70,7 @@ services:
     App\State\QuizProvider:
         bind:
             $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
+
+    # App\Normalizer\QuizResponseListNormalizer:
+    #     decorates: "api_platform.hydra.normalizer.collection"
+    #     arguments: ['@App\Normalizer\QuizResponseListNormalizer.inner']

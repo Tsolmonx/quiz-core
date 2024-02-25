@@ -10,6 +10,7 @@ class BadRequestBaseException extends \Exception
 {
     public const PARAMETER_NOT_FOUND = 2000;
     public const PARAMETER_NOT_ENOUGH = 2001;
+    public const ANSWER_NOT_EXISTS_IN_QUESTION = 2002;
 
     /**
      * @param string $message

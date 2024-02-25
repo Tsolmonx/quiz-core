@@ -24,20 +24,21 @@ class QuizResponse
     #[ORM\JoinColumn(nullable: false)]
     private ?User $quizTaker = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Question $question = null;
-
-    #[ORM\ManyToMany(targetEntity: Answer::class)]
-    #[ORM\JoinTable(name: 'app_quiz_response_answers')]
-    private Collection $selectedAnswers;
-
     #[ORM\Column]
     private ?int $attempt = null;
 
+    #[ORM\OneToMany(mappedBy: 'quizResponse', targetEntity: QuestionResponse::class, orphanRemoval: true)]
+    private Collection $questionResponses;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $totalRightAnswers = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $percent = null;
+
     public function __construct()
     {
-        $this->selectedAnswers = new ArrayCollection();
+        $this->questionResponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,42 +70,6 @@ class QuizResponse
         return $this;
     }
 
-    public function getQuestion(): ?Question
-    {
-        return $this->question;
-    }
-
-    public function setQuestion(?Question $question): static
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Answer>
-     */
-    public function getSelectedAnswers(): Collection
-    {
-        return $this->selectedAnswers;
-    }
-
-    public function addSelectedAnswer(Answer $selectedAnswer): static
-    {
-        if (!$this->selectedAnswers->contains($selectedAnswer)) {
-            $this->selectedAnswers->add($selectedAnswer);
-        }
-
-        return $this;
-    }
-
-    public function removeSelectedAnswer(Answer $selectedAnswer): static
-    {
-        $this->selectedAnswers->removeElement($selectedAnswer);
-
-        return $this;
-    }
-
     public function getAttempt(): ?int
     {
         return $this->attempt;
@@ -113,6 +78,60 @@ class QuizResponse
     public function setAttempt(int $attempt): static
     {
         $this->attempt = $attempt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, QuestionResponse>
+     */
+    public function getQuestionResponses(): Collection
+    {
+        return $this->questionResponses;
+    }
+
+    public function addQuestionResponse(QuestionResponse $questionResponse): static
+    {
+        if (!$this->questionResponses->contains($questionResponse)) {
+            $this->questionResponses->add($questionResponse);
+            $questionResponse->setQuizResponse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestionResponse(QuestionResponse $questionResponse): static
+    {
+        if ($this->questionResponses->removeElement($questionResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($questionResponse->getQuizResponse() === $this) {
+                $questionResponse->setQuizResponse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTotalRightAnswers(): ?int
+    {
+        return $this->totalRightAnswers;
+    }
+
+    public function setTotalRightAnswers(?int $totalRightAnswers): static
+    {
+        $this->totalRightAnswers = $totalRightAnswers;
+
+        return $this;
+    }
+
+    public function getPercent(): ?float
+    {
+        return $this->percent;
+    }
+
+    public function setPercent(?float $percent): static
+    {
+        $this->percent = $percent;
 
         return $this;
     }
